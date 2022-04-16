@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>
+      Intro to MapView - Create a 2D map | Sample | ArcGIS API for JavaScript
+      4.23
+    </title>
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 90%;
+        width: 80%;
+        float:left;
+        font-size:45px;
+       
+     
+        
+      }
+      #yemei {
+        padding: 0;
+        margin: 0;
+        height: 10%;
+        width: 100%;
+        background:	plum;
+        text-align:center;
+      }
+      #section {
+        padding: 0;
+        margin: 0;
+        height: 90%;
+        width: 20%;
+        float:right;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.23/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.23/"></script>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView", "esri/layers/FeatureLayer","esri/widgets/LayerList","esri/widgets/CoordinateConversion","esri/widgets/Legend","esri/widgets/Search","esri/widgets/ScaleBar","esri/widgets/BasemapGallery"], (
+        Map,
+        MapView,
+        FeatureLayer,
+        LayerList,
+        CoordinateConversion,
+        Legend,
+        Search,
+        ScaleBar,
+        BasemapGallery
+      ) => {
+        const map = new Map({
+          basemap: "topo-vector"
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map
+        
+        });
+         const view1 = new MapView({
+          container: "section",
+         
+        
+        });
+
+         const featurelayer3 = new FeatureLayer({
+          url: "http://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/MonterreyBayCanyon_WFL/FeatureServer"
+        });
+        const featurelayer4 = new FeatureLayer({
+          url: "https://sampleserver6.arcgisonline.com/arcgis/rest/services/SF311/FeatureServer/1"
+        });
+        const featurelayer5 = new FeatureLayer({
+          url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Wildfire/FeatureServer"
+        });
+        const featurelayer6 = new FeatureLayer({
+          url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/Earthquakes_Since1970/FeatureServer"
+        });
+         const featurelayer7 = new FeatureLayer({
+          url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/CommunityAddressing/FeatureServer"
+        });
+         const featurelayer8 = new FeatureLayer({
+          url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/DamageAssessment/FeatureServer"
+        });
+         const featurelayer9 = new FeatureLayer({
+          url: "http://sampleserver6.arcgisonline.com/arcgis/rest/services/EmergencyFacilities/FeatureServer"
+        });
+        map.add(featurelayer9);
+        map.add(featurelayer8);
+        //map.add(featurelayer7);
+        map.add(featurelayer6);
+        map.add(featurelayer5);
+       // map.add(featurelayer4);
+        //map.add(featurelayer3);
+        
+        const scaleBar = new ScaleBar({
+          view: view,
+          unit: "dual" // The scale bar displays both metric and non-metric units.
+        });
+
+        // Add the widget to the bottom left corner of the view
+        view.ui.add(scaleBar, {
+          position: "bottom-left"
+        });
+        
+        view.when(() => {
+          const layerList = new LayerList({
+            view: view
+          });
+
+          
+
+          // Add widget to the top right corner of the view
+          view.ui.add(layerList, "top-right");
+        });
+        const ccWidget = new CoordinateConversion({
+          view: view
+        });
+
+        view.ui.add(ccWidget, "bottom-right");
+        
+        view.when(() => {
+          // get the first layer in the collection of operational layers in the WebMap
+          // when the resources in the MapView have loaded.
+          const featureLayer = map.layers.getItemAt(1);
+
+          const legend = new Legend({
+            view: view,
+            layerInfos: [
+              {
+                layer: featureLayer,
+                title: "DamageAssessment"
+              }
+            ]
+          });
+
+          // Add widget to the bottom right corner of the view
+          view.ui.add(legend, "top-left");
+        });
+        const searchWidget = new Search({
+          view: view
+        });
+
+        // Add the search widget to the top right corner of the view
+        view.ui.add(searchWidget, {
+          position: "top-right"
+        });
+        
+        const basemapGallery = new BasemapGallery({
+          view: view
+        });
+        
+        // Add the widget to the top-right corner of the view
+        view1.ui.add(basemapGallery, {
+          position: "top-left"
+        });
+
+
+        
+        
+        
+    
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="yemei">全球灾害概览</div>
+    <div id="viewDiv"></div>
+    <div id="section"></div>
+  </body>
+</html>
